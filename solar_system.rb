@@ -27,6 +27,19 @@ class SolarSystem
     @planets.push(planet)
   end
 
+  def between_planets(planet1, planet2)
+    dist = planet1.dist_sun - planet2.dist_sun
+    dist = dist.to_s
+    if dist[0] == "-"
+      dist = dist.delete "-"
+      dist.to_i
+    else
+      dist.to_i
+    end
+    return dist
+
+  end
+
   def find_local_year(planet)
     local_year = ((@current_year - @formation_date) / planet.rate_of_solar_rotation)
     return local_year.to_i
@@ -76,8 +89,9 @@ class SolarSystem
 3. Number of Moons
 4. Rate of solar rotation
 5. The local year of the planet
+6. The distance to another planet
 
-Please type 1, 2, 3, 4, or 5
+Please type 1, 2, 3, 4, 5, or 6
 
 To go back to the planet menu, type \"planet menu\".
 To exit completely, type \"exit\".
@@ -108,6 +122,28 @@ To exit completely, type \"exit\".
         input = gets.chomp
       elsif input == "5"
         puts "\nThe local year on #{planet.name} is #{find_local_year(planet)}."
+        puts
+        puts prompt
+        input = gets.chomp
+      elsif input == "6"
+        puts "Choose a planet below to calculate #{planet.name}'s distance from it:"
+        puts
+        @planets.each do |p|
+          puts p.name
+        end
+        puts
+        print "> "
+        other_planet = gets.chomp
+        if other_planet == "exit"
+          puts "Goodbye!"
+          exit
+        end
+        @planets.each do |p|
+            if p.name.to_s.include? other_planet.to_s
+              other_planet = p
+            end
+        end
+        puts "#{planet.name} is #{between_planets(planet, other_planet)} miles from #{other_planet.name}."
         puts
         puts prompt
         input = gets.chomp
