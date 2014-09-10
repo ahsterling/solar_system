@@ -1,5 +1,6 @@
 class Planet
   #The rate of solar rotation is expressed in earth years
+  
   attr_accessor :name, :mass_in_kg, :dist_sun, :num_of_moons, :rate_of_solar_rotation
 
   def initialize(planet_hash)
