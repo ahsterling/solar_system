@@ -132,36 +132,39 @@ To exit completely, type \"exit\".
 """
   end
 
+  def answer_display(input)
+    if input == "1"
+      puts "\n#{@current_planet.name}'s mass is #{@current_planet.mass_in_kg} kg.".colorize(:red)
+    elsif input == "2"
+      puts "\n#{@current_planet.name} is #{@current_planet.dist_sun} miles from the sun.".colorize(:red)
+    elsif input == "3"
+      puts "\n#{@current_planet.name} has #{@current_planet.num_of_moons} moons.".colorize(:red)
+    elsif input == "4"
+      puts "\n#{@current_planet.name}'s rate of solar rotation is #{@current_planet.rate_of_solar_rotation} earth years.".colorize(:red)
+    elsif input == "5"
+      puts "\nThe local year on #{@current_planet.name} is #{find_local_year(@current_planet)}.".colorize(:red)
+    elsif input == "6"
+      between_planets_display
+    elsif input == "planet menu"
+      puts
+      start
+    else
+      puts "Sorry, I didn't understand that.  Please type 1, 2, 3, 4, 5, or 6 to choose an option."
+      input = gets.chomp
+    end
+  end
+
   def explore_planet(planet)
     planet_menu
     print "> "
     input = gets.chomp
     while input
       exit?(input)
-      if input == "1"
-        puts "\n#{planet.name}'s mass is #{planet.mass_in_kg} kg.".colorize(:red)
-      elsif input == "2"
-        puts "\n#{planet.name} is #{planet.dist_sun} miles from the sun.".colorize(:red)
-      elsif input == "3"
-        puts "\n#{planet.name} has #{planet.num_of_moons} moons.".colorize(:red)
-      elsif input == "4"
-        puts "\n#{planet.name}'s rate of solar rotation is #{planet.rate_of_solar_rotation} earth years.".colorize(:red)
-      elsif input == "5"
-        puts "\nThe local year on #{planet.name} is #{find_local_year(planet)}.".colorize(:red)
-      elsif input == "6"
-        between_planets_display
-      elsif input == "planet menu"
-        puts
-        start
-      else
-        puts "Sorry, I didn't understand that.  Please type 1, 2, 3, 4, 5, or 6 to choose an option."
-        input = gets.chomp
-      end
+      answer_display(input)
       puts
       planet_menu
       input = gets.chomp
     end
-
   end
 
   def our_solar_system
