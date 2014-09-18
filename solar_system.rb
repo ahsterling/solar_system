@@ -1,3 +1,5 @@
+require 'colorize'
+
 class Planet
   #The rate of solar rotation is expressed in earth years
 
@@ -41,6 +43,26 @@ class SolarSystem
 
   end
 
+  def between_planets_display
+    puts "Choose a planet below to calculate #{@current_planet.name}'s distance from it:"
+    puts
+    all_planets_menu
+    puts
+    print "> "
+    other_planet = gets.chomp
+    if other_planet == "exit"
+      puts "Goodbye!"
+      exit
+    end
+    @planets.each do |p|
+        if p.name.to_s.include? other_planet.to_s
+          other_planet = p
+        end
+    end
+    puts "#{@current_planet.name} is #{between_planets(@current_planet, other_planet)} miles from #{other_planet.name}.".colorize(:red)
+
+  end
+
   def find_local_year(planet)
     local_year = ((@current_year - @formation_date) / planet.rate_of_solar_rotation)
     return local_year.to_i
@@ -58,33 +80,44 @@ class SolarSystem
     end
   end
 
-  def start
-    puts "Which planet would you like to explore? Choose one of the planets below."
-    puts
-    puts "To exit, type \"exit\""
-    puts
-    @planets.each do |p|
-      puts p.name
-    end
-    puts
-    print "> "
-    input = gets.chomp
+  def exit?(input)
     if input == "exit"
       puts "Goodbye!"
       exit
     end
-    @planets.each do |p|
-        if p.name.include? input
-          @current_planet = p
-        end
-    end
+  end
+
+  def start
+    puts "\nWelcome to the solar system!  Choose a planet to explore:"
+    all_planets_menu
+    print "> "
+    input = gets.chomp
+    exit?(input)
+    choose_planet(input)
     puts
     explore_planet(@current_planet)
 
   end
 
-  def explore_planet(planet)
-    prompt = """What would you like to know about this planet?
+  def choose_planet(input)
+    @planets.each do |p|
+        if p.name.include? input
+          @current_planet = p
+        end
+    end
+  end
+
+  def all_planets_menu
+    puts
+    @planets.each do |p|
+      puts p.name
+    end
+    puts
+    puts "To exit, type \"exit\""
+  end
+
+  def planet_menu
+    puts """What would you like to know about #{@current_planet.name}?
 1. Mass
 2. Distance from the sun
 3. Number of Moons
@@ -97,52 +130,35 @@ Please type 1, 2, 3, 4, 5, or 6
 To go back to the planet menu, type \"planet menu\".
 To exit completely, type \"exit\".
 """
-    puts prompt
+  end
+
+  def explore_planet(planet)
+    planet_menu
     print "> "
     input = gets.chomp
     while input
+      exit?(input)
       if input == "1"
-        puts "\n#{planet.name}'s mass is #{planet.mass_in_kg} kg."
+        puts "\n#{planet.name}'s mass is #{planet.mass_in_kg} kg.".colorize(:red)
       elsif input == "2"
-        puts "\n#{planet.name} is #{planet.dist_sun} miles from the sun."
+        puts "\n#{planet.name} is #{planet.dist_sun} miles from the sun.".colorize(:red)
       elsif input == "3"
-        puts "\n#{planet.name} has #{planet.num_of_moons} moons."
+        puts "\n#{planet.name} has #{planet.num_of_moons} moons.".colorize(:red)
       elsif input == "4"
-        puts "\n#{planet.name}'s rate of solar rotation is #{planet.rate_of_solar_rotation} earth years."
+        puts "\n#{planet.name}'s rate of solar rotation is #{planet.rate_of_solar_rotation} earth years.".colorize(:red)
       elsif input == "5"
-        puts "\nThe local year on #{planet.name} is #{find_local_year(planet)}."
+        puts "\nThe local year on #{planet.name} is #{find_local_year(planet)}.".colorize(:red)
       elsif input == "6"
-        puts "Choose a planet below to calculate #{planet.name}'s distance from it:"
-        puts
-        @planets.each do |p|
-          puts p.name
-        end
-        puts
-        print "> "
-        other_planet = gets.chomp
-        if other_planet == "exit"
-          puts "Goodbye!"
-          exit
-        end
-        @planets.each do |p|
-            if p.name.to_s.include? other_planet.to_s
-              other_planet = p
-            end
-        end
-        puts "#{planet.name} is #{between_planets(planet, other_planet)} miles from #{other_planet.name}."
-
-      elsif input == "exit"
-        puts "Goodbye!"
-        exit
+        between_planets_display
       elsif input == "planet menu"
         puts
         start
       else
-        puts "Sorry, I didn't understand that.  Please type 1, 2, 3, 4, or 5 to choose an option."
+        puts "Sorry, I didn't understand that.  Please type 1, 2, 3, 4, 5, or 6 to choose an option."
         input = gets.chomp
       end
       puts
-      puts prompt
+      planet_menu
       input = gets.chomp
     end
 
