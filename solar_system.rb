@@ -1,6 +1,6 @@
 class Planet
   #The rate of solar rotation is expressed in earth years
-  
+
   attr_accessor :name, :mass_in_kg, :dist_sun, :num_of_moons, :rate_of_solar_rotation
 
   def initialize(planet_hash)
@@ -103,29 +103,14 @@ To exit completely, type \"exit\".
     while input
       if input == "1"
         puts "\n#{planet.name}'s mass is #{planet.mass_in_kg} kg."
-        puts
-        puts prompt
-        input = gets.chomp
       elsif input == "2"
         puts "\n#{planet.name} is #{planet.dist_sun} miles from the sun."
-        puts
-        puts prompt
-        input = gets.chomp
       elsif input == "3"
         puts "\n#{planet.name} has #{planet.num_of_moons} moons."
-        puts
-        puts prompt
-        input = gets.chomp
       elsif input == "4"
         puts "\n#{planet.name}'s rate of solar rotation is #{planet.rate_of_solar_rotation} earth years."
-        puts
-        puts prompt
-        input = gets.chomp
       elsif input == "5"
         puts "\nThe local year on #{planet.name} is #{find_local_year(planet)}."
-        puts
-        puts prompt
-        input = gets.chomp
       elsif input == "6"
         puts "Choose a planet below to calculate #{planet.name}'s distance from it:"
         puts
@@ -145,9 +130,7 @@ To exit completely, type \"exit\".
             end
         end
         puts "#{planet.name} is #{between_planets(planet, other_planet)} miles from #{other_planet.name}."
-        puts
-        puts prompt
-        input = gets.chomp
+
       elsif input == "exit"
         puts "Goodbye!"
         exit
@@ -158,6 +141,9 @@ To exit completely, type \"exit\".
         puts "Sorry, I didn't understand that.  Please type 1, 2, 3, 4, or 5 to choose an option."
         input = gets.chomp
       end
+      puts
+      puts prompt
+      input = gets.chomp
     end
 
   end
